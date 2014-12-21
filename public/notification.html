@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<style>
+		body {
+			font-family: sans-serif;
+			font-size:20px;
+		}
+		.container {
+			background:#EEE;
+			border:1px solid #DDD;
+			width:400px;
+		}
+		.title {
+			background:#AAA;
+			margin:0;
+			padding:3px;
+			font-weight:600;
+		}
+	</style>
+</head>
+<body>
+	<div class="container" id="container">
+		<div class="title">Notification</div>
+		<div class="text" id="text">Text</div>
+	</div>
+	
+	<script>
+		$(document).ready(function (){
+			var socket = io.connect('http://localhost:3000');
+			socket.on('show msg', function(data) {
+				$('#container').hide();
+			});
+		});
+	</script>
+</body>
+</html>

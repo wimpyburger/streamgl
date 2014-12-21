@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+		h1 {
+			margin-top:0;
+			margin-bottom:10px;
+		}
+		.panel {
+			background:#EEE;
+			padding:5px;
+			border:1px solid #DDD;
+		}
+		.button {
+			background:#25A6E1;
+			width:100px;
+			text-align:center;
+			padding:4px;
+			border:1px solid #1A87B9;
+			color:#FFF;
+			display: inline-block;
+		}
+		.button:hover {
+			background:#188BC0;
+			cursor: pointer;
+		}
+		input {
+			margin-bottom:2px;
+			padding:4px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Dashboard</h1>
+	<div class="panel" id="panel">
+		<input type="text" id="msgtext" size="30px"><br>
+		<div class="button" id="showmsg">Display</div>
+		<div class="button" id="hidemsg">Hide</div>
+	</div>
+	
+	<script>
+		$('#showmsg').click(function() {
+			var socket = io.connect('http://localhost:3000');
+			var msgText = $('#msgtext');
+			socket.emit('show msg', msgText.val());
+		});
+	</script>
+</body>
+</html>
