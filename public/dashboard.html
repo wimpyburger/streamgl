@@ -11,10 +11,26 @@
 			margin-top:0;
 			margin-bottom:10px;
 		}
-		.panel {
+		.container {
+			height: auto;
+			overflow: hidden;
+		}
+		.leftpanel {
+			border:1px solid #CCC;
+			margin-bottom:5px;
+			width:49.5%;
+		}
+		.rightpanel {
+			border:1px solid #CCC;
+			width:49.5%;
+			float: right;
+		}
+		.title {
+			border-bottom:1px solid #CCC;
 			background:#EEE;
-			padding:5px;
-			border:1px solid #DDD;
+			width:100%;
+			font-size:18px;
+			margin-bottom:3px;
 		}
 		.button {
 			background:#25A6E1;
@@ -37,17 +53,155 @@
 </head>
 <body>
 	<h1>Dashboard</h1>
-	<div class="panel" id="panel">
-		<input type="text" id="msgtext" size="30px"><br>
-		<div class="button" id="showmsg">Display</div>
-		<div class="button" id="hidemsg">Hide</div>
+	<div class="container">
+		<div class="rightpanel">
+			<div class="title">Display Image</div>
+			Title: <input type="text" id="imgtitle" size="30px"><br>
+			URL: <input type="text" id="imgurl" size="30px"><br>
+			Time: <input type="text" id="imgtime" size="30px" value="5000"><br>
+			<div class="button" id="showimg">Display</div>
+			<div class="button" id="hideimg">Hide</div>
+		</div>
+		
+		<div class="leftpanel">
+			<div class="title">Display Message</div>
+			Title: <input type="text" id="msgtitle" size="30px"><br>
+			Text: <input type="text" id="msgtext" size="30px"><br>
+			Time: <input type="text" id="msgtime" size="30px" value="5000"><br>
+			<div class="button" id="showmsg">Display</div>
+			<div class="button" id="hidemsg">Hide</div>
+		</div>
+		
+		<div class="rightpanel">
+			<div class="title">Members</div>
+			1: <input type="text" id="member1url" size="5px">
+			2: <input type="text" id="member2url" size="5px">
+			3: <input type="text" id="member3url" size="5px">
+			4: <input type="text" id="member4url" size="5px">
+			5: <input type="text" id="member5url" size="5px"><br>
+			<div class="button" id="showmembers">Show</div>
+			<div class="button" id="hidemembers">Hide</div>
+		</div>
+		
+		<div class="leftpanel">
+			<div class="title">Transition</div>
+			Time: <input type="text" id="transitiontime" size="30px" value="2000"><br>
+			<div class="button" id="transition">Show</div>
+		</div>
+		
+		<div class="rightpanel">
+			<div class="title">Background Image</div>
+			URL: <input type="text" id="backgroundurl" size="30px"><br>
+			BG: <input type="text" id="backgroundcolour" size="10px" value="#000000">
+			Tile: <input type="checkbox" id="backgroundtile">
+			Centre: <input type="checkbox" id="backgroundcentre"><br />
+			<div class="button" id="backgroundshow">Show</div>
+			<div class="button" id="backgroundhide">Hide</div>
+		</div>
+		
+		<div class="leftpanel">
+			<div class="title">Latest Follower</div>
+			Interval: <input type="text" id="followerinterval" size="30px" value="2000"><br>
+			Channel: <input type="text" id="followerchannel" size="30px"><br>
+			<div class="button" id="followershow">Show</div>
+			<div class="button" id="followerhide">Hide</div>
+		</div>
+		
+		<div class="rightpanel">
+			<div class="title">Header</div>
+			BGColour: <input type="text" id="headerbg" size="30px" value="#000"><br>
+			Opacity: <input type="text" id="headeropacity" size="30px" value="1"><br>
+			txtColour: <input type="text" id="headercolour" size="30px" value="#FFF"><br>
+			Text: <input type="text" id="headertext" size="30px" value="#FFF"><br>
+			<div class="button" id="headershow">Show</div>
+			<div class="button" id="headerhide">Hide</div>
+		</div>
+		
 	</div>
 	
 	<script>
+		var socket = io.connect('http://localhost:3000');
+		
+		$('#headershow').click(function() {
+			var headerbg = $('#headerbg').val();
+			var headeropacity = $('#headeropacity').val();
+			var headercolour = $('#headercolour').val();
+			var headertext = $('#headertext').val();
+			socket.emit('headershow', {bg : headerbg, opacity : headeropacity, bgcolour : headercolour, text : headertext});
+		});
+		
+		$('#headerhide').click(function() {
+			socket.emit('headerhide', 0);
+		});
+		
+		$('#followershow').click(function() {
+			var followerinterval = $('#followerinterval').val();
+			var followerchannel = $('#followerchannel').val();
+			socket.emit('followershow', {interval : followerinterval, channel : followerchannel});
+		});
+		
+		$('#followerhide').click(function() {
+			socket.emit('followerhide', '');
+		});
+		
 		$('#showmsg').click(function() {
-			var socket = io.connect('http://localhost:3000');
-			var msgText = $('#msgtext');
-			socket.emit('show msg', msgText.val());
+			var msgtitle = $('#msgtitle').val();
+			var msgtext = $('#msgtext').val();
+			var msgtime = $('#msgtime').val();
+			socket.emit('show msg', {title : msgtitle, text : msgtext, time : msgtime});
+		});
+		
+		$('#hidemsg').click(function() {
+			socket.emit('hide', '');
+		});
+		
+		$('#showimg').click(function() {
+			var imgtitle = $('#imgtitle').val();
+			var imgurl = $('#imgurl').val();
+			var imgtime = $('#imgtime').val();
+			socket.emit('showimg', {title : imgtitle, url : imgurl, time : imgtime});
+		});
+		
+		$('#hideimg').click(function() {
+			socket.emit('hideimg', '');
+		});
+		
+		$('#transition').click(function() {
+			var transitiontime = $('#transitiontime').val();
+			socket.emit('transition', transitiontime);
+		});
+		
+		$('#backgroundshow').click(function() {
+			var backgroundurl = $('#backgroundurl').val();
+			var backgroundcolour = $('#backgroundcolour').val();
+			if($('#backgroundtile').is(':checked')) {
+				var backgroundtile = true;
+			} else {
+				var backgroundtile = false;
+			}
+			if($('#backgroundcentre').is(':checked')) {
+				var backgroundcentre = true;
+			} else {
+				var backgroundcentre = false;
+			}
+			socket.emit('backgroundshow', {url : backgroundurl, colour : backgroundcolour, tile : backgroundtile, centre : backgroundcentre});
+		});
+		
+		$('#backgroundhide').click(function() {
+			socket.emit('backgroundhide', '');
+		});
+		
+		$('#showmembers').click(function() {
+			var url1 = $('#member1url').val();
+			var url2 = $('#member2url').val();
+			var url3 = $('#member3url').val();
+			var url4 = $('#member4url').val();
+			var url5 = $('#member5url').val();
+			socket.emit('showmembers', {url1 : url1, url2 : url2, url3 : url3, url4 : url4, url5 : url5});
+		});
+		
+		$('#hidemembers').click(function() {
+			socket.emit('hidemembers', '');
 		});
 	</script>
 </body>

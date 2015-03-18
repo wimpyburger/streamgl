@@ -6,33 +6,260 @@
 	<style>
 		body {
 			font-family: sans-serif;
-			font-size:20px;
-		}
-		.container {
-			background:#EEE;
-			border:1px solid #DDD;
-			width:400px;
-		}
-		.title {
-			background:#AAA;
+			font-size:24px;
 			margin:0;
+		}
+		.panel {
+			position:absolute;
+			padding:1px;
+			background:#f5f5f5;
+			border:1px solid #CCC;
+			margin:2px;
+			width:500px;
+			top:40px;
+		}
+		#title {
 			padding:3px;
-			font-weight:600;
+			font-weight:bold;
+			background:#e6e6e6;
+		}
+		#text {
+			padding:3px;
+		}
+		#transition {
+			background:#AAA;
+			position:absolute;
+			width:0%;
+			height:0%;
+			z-index:10001;
+		}
+		#image {
+			position:absolute;
+			top:0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+		#background {
+			position:absolute;
+			width:100%;
+			height:100%;
+			top:0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index:-2;
+		}
+		#transitionimg {
+			position:absolute;
+			top:0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			opacity:0;
+			margin: auto;
+		}
+		.members {
+			padding:4px;
+			background:#EEE;
+			border:1px solid #CCC;
+			margin:2px;
+			float:right;
+		}
+		.member {
+			padding:4px;
+			display:inline;
+			border:1px solid #CCC;
+		}
+		.follower {
+			border:1px solid #000;
+			background:#555;
+			color:#FFF;
+			opacity: 0.8;
+			margin:0 auto;
+			padding:4px;
+			width:350px;
+			text-align:center;
+		}
+		.header {
+			background:#000;
+			padding-top:5px;
+			padding-bottom:5px;
+			position:absolute;
+			left:0;
+			top:0;
+			width:100%;
+			z-index:-1;
 		}
 	</style>
 </head>
 <body>
-	<div class="container" id="container">
-		<div class="title">Notification</div>
-		<div class="text" id="text">Text</div>
+
+	<div class="background" id="background"></div>
+	<div class="transition" id="transition"><img id="transitionimg" src="./logo.png"></div>
+	
+	<div class="panel" id="panel">
+		<div id="title"></div>
+		<div id="text"></div>
 	</div>
 	
+	<div class="members" id="members">
+		<img class="member" id="img1" width="100px">
+		<img class="member" id="img2" width="100px">
+		<img class="member" id="img3" width="100px">
+		<img class="member" id="img4" width="100px">
+		<img class="member" id="img5" width="100px">
+	</div>
+	
+	<img id="image">
+	
+	<div class="follower" id="follower"></div>
+	
+	<div class="header" id="header">Test</div>
+	
 	<script>
-		$(document).ready(function (){
-			var socket = io.connect('http://localhost:3000');
-			socket.on('show msg', function(data) {
-				$('#container').hide();
-			});
+
+		$('#panel').hide();
+		$('#image').hide();
+		$('#transition').hide();
+		$('#background').hide();
+		$('#members').hide();
+		$('.member').hide();
+		$('#follower').hide();
+		$('#header').hide();
+
+		var socket = io.connect('http://localhost:3000');
+		
+		function checkFollowers(channel, interval) {
+			var intervalfollowers = setInterval(function() {
+				$.getJSON('https://api.twitch.tv/kraken/channels/' + channel + '/follows?direction=desc&limit=1&callback=?', function(result){
+					if(result.follows) {
+						result.follows.forEach(function(follower) {
+							$('#follower').text("Last follower: " + follower.user.name);
+						});
+					}
+				});
+			}, interval);
+		}
+		
+		socket.on('headershow', function (data) {
+			$('#header').css('background', data.bg);
+			$('#header').css('opacity', data.opacity);
+			$('#header').css('color', data.bgcolour);
+			$('#header').html(data.text);
+			$('#header').fadeIn();
+		});
+		
+		socket.on('headerhide', function (data) {
+			$('#header').fadeOut();
+		});
+		
+		socket.on('followershow', function (data) {
+			$('#follower').fadeIn();
+			checkFollowers(data.channel, false, data.interval);
+		});
+
+		
+		socket.on('followerhide', function (data) {
+			$('#follower').fadeOut();
+		});
+		
+		
+		socket.on('news', function (data) {
+			if(data.time == '0') {
+				$('#panel').fadeIn();
+			} else {
+				$('#panel').fadeIn().delay(data.time).fadeOut();
+			}
+			$('#title').text(data.title);
+			$('#text').text(data.text);
+		});
+		
+		socket.on('hide', function (data) {
+			$('#panel').clearQueue();
+			$('#panel').fadeOut();
+		});
+		
+		socket.on('showimg', function (data) {
+			if(data.time == '0') {
+				$('#image').fadeIn();
+			} else {
+				$('#image').fadeIn().delay(data.time).fadeOut();
+			}
+			$('#image').attr("src", data.url);
+		});
+		
+		socket.on('hideimg', function (data) {
+			$('#image').clearQueue();
+			$('#image').fadeOut();
+		});
+		
+		socket.on('transition', function (data) {
+			$('#transition').show();
+			$('#transitionimg').animate({opacity:1});
+			$('#transition').animate({width:'100%', height:'100%'});
+			$("#transition").delay(data).show(0);
+			$('#transition').animate({width:'0%', height:'0%'});
+			$('#transitionimg').delay(data).animate({opacity:0});
+			
+			//$('#transition').fadeIn().delay(data).fadeOut();
+		});
+		
+		socket.on('showmembers', function (data) {
+			if(data.url1) {
+				$('#img1').show();
+				$('#img1').attr("src", data.url1);
+			}
+			
+			if(data.url2) {
+				$('#img2').show();
+				$('#img2').attr("src", data.url2);
+			}
+			
+			if(data.url3) {
+				$('#img3').show();
+				$('#img3').attr("src", data.url3);
+			}
+			
+			if(data.url4) {
+				$('#img4').show();
+				$('#img4').attr("src", data.url4);
+			}
+			
+			if(data.url5) {
+				$('#img5').show();
+				$('#img5').attr("src", data.url5);
+			}
+		
+			$('#members').fadeIn();
+		});
+		
+		socket.on('hidemembers', function (data) {
+			$('#members').fadeOut();
+			$('.member').fadeOut();
+		});
+		
+		socket.on('backgroundshow', function (data) {
+			$('#background').css('background',data.colour);
+			$('#background').css('background-image','url('+ data.url +')');
+			
+			if(data.tile) {
+				$('#background').css('background-repeat', 'repeat');
+			} else {
+				$('#background').css('background-repeat', 'no-repeat');
+			}
+			
+			if(data.centre) {
+				$('#background').css('background-position', 'center');
+			} else {
+				$('#background').css('background-position', '0% 0%');
+			}
+			
+			$('#background').fadeIn();
+		});
+		
+		socket.on('backgroundhide', function (data) {
+			$('#background').fadeOut();
 		});
 	</script>
 </body>
