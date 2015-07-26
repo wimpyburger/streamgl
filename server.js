@@ -26,6 +26,10 @@ app.get('/brenman.jpg', function(req, res) {
 	res.sendFile(__dirname + '/public/img/brenman.jpg');
 });
 
+app.get('/jammez.jpg', function(req, res) {
+	res.sendFile(__dirname + '/public/img/jammez.jpg');
+});
+
 io.sockets.on('connection', function(socket) {
 	socket.on('headershow', function(data) {
 		io.emit('headershow', data);

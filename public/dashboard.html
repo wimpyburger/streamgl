@@ -3,6 +3,32 @@
 <head>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var updated = false;
+		
+		function resize() {
+			console.log($('.rightside').css("float"));
+			if($('.leftside').width() < 300) {
+				updated = true;
+				$('.leftside').css("display", "block");
+				$('.rightside').css("float", "none");
+				$('.rightside').css("width", "100%");
+				$('.leftside').css("width", "100%");
+			} else if($('.leftside').width() > 600) {
+					$('.leftside').css("display", "inline-block");
+					$('.rightside').css("float", "right");
+					$('.rightside').css("width", "49%");
+					$('.leftside').css("width", "49%");
+					updated = false;
+			}
+		}
+		// window resize script
+		window.onresize = function(event) {
+			resize();
+		};
+		
+		setInterval(function(){resize();},500);
+	</script>
 	<style>
 		body {
 			font-family: sans-serif;
@@ -15,15 +41,19 @@
 			height: auto;
 			overflow: hidden;
 		}
-		.leftpanel {
+		.leftside {
+			display:inline-block;
+			margin-bottom:5px;
+			width:49%;
+		}
+		.rightside {
+			display:inline-block;
+			width:49%;
+			float: right;
+		}
+		.box {
 			border:1px solid #CCC;
 			margin-bottom:5px;
-			width:49.5%;
-		}
-		.rightpanel {
-			border:1px solid #CCC;
-			width:49.5%;
-			float: right;
 		}
 		.title {
 			border-bottom:1px solid #CCC;
@@ -53,8 +83,8 @@
 </head>
 <body>
 	<h1>Dashboard</h1>
-	<div class="container">
-		<div class="rightpanel">
+	<div class="leftside">
+		<div class="box">
 			<div class="title">Display Image</div>
 			Title: <input type="text" id="imgtitle" size="30px"><br>
 			URL: <input type="text" id="imgurl" size="30px"><br>
@@ -63,7 +93,7 @@
 			<div class="button" id="hideimg">Hide</div>
 		</div>
 		
-		<div class="leftpanel">
+		<div class="box">
 			<div class="title">Display Message</div>
 			Title: <input type="text" id="msgtitle" size="30px"><br>
 			Text: <input type="text" id="msgtext" size="30px"><br>
@@ -72,24 +102,28 @@
 			<div class="button" id="hidemsg">Hide</div>
 		</div>
 		
-		<div class="rightpanel">
+		<div class="box">
 			<div class="title">Members</div>
 			1: <input type="text" id="member1url" size="5px">
 			2: <input type="text" id="member2url" size="5px">
-			3: <input type="text" id="member3url" size="5px">
+			3: <input type="text" id="member3url" size="5px"><br>
 			4: <input type="text" id="member4url" size="5px">
 			5: <input type="text" id="member5url" size="5px"><br>
 			<div class="button" id="showmembers">Show</div>
 			<div class="button" id="hidemembers">Hide</div>
 		</div>
 		
-		<div class="leftpanel">
+		<div class="box">
 			<div class="title">Transition</div>
 			Time: <input type="text" id="transitiontime" size="30px" value="2000"><br>
 			<div class="button" id="transition">Show</div>
 		</div>
 		
-		<div class="rightpanel">
+	</div>
+		
+	<div class="rightside">
+		
+		<div class="box">
 			<div class="title">Background Image</div>
 			URL: <input type="text" id="backgroundurl" size="30px"><br>
 			BG: <input type="text" id="backgroundcolour" size="10px" value="#000000">
@@ -99,7 +133,7 @@
 			<div class="button" id="backgroundhide">Hide</div>
 		</div>
 		
-		<div class="leftpanel">
+		<div class="box">
 			<div class="title">Latest Follower</div>
 			Interval: <input type="text" id="followerinterval" size="30px" value="2000"><br>
 			Channel: <input type="text" id="followerchannel" size="30px"><br>
@@ -107,12 +141,12 @@
 			<div class="button" id="followerhide">Hide</div>
 		</div>
 		
-		<div class="rightpanel">
+		<div class="box">
 			<div class="title">Header</div>
 			BGColour: <input type="text" id="headerbg" size="30px" value="#000"><br>
 			Opacity: <input type="text" id="headeropacity" size="30px" value="1"><br>
 			txtColour: <input type="text" id="headercolour" size="30px" value="#FFF"><br>
-			Text: <input type="text" id="headertext" size="30px" value="#FFF"><br>
+			Text: <input type="text" id="headertext" size="30px"><br>
 			<div class="button" id="headershow">Show</div>
 			<div class="button" id="headerhide">Hide</div>
 		</div>

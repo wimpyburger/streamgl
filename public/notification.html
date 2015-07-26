@@ -128,10 +128,13 @@
 		$('#follower').hide();
 		$('#header').hide();
 
+		var intervalfollowers;
 		var socket = io.connect('http://localhost:3000');
 		
 		function checkFollowers(channel, interval) {
-			var intervalfollowers = setInterval(function() {
+			clearInterval(intervalfollowers);
+			intervalfollowers = setInterval(function() {
+				intervalfollower = true;
 				$.getJSON('https://api.twitch.tv/kraken/channels/' + channel + '/follows?direction=desc&limit=1&callback=?', function(result){
 					if(result.follows) {
 						result.follows.forEach(function(follower) {
@@ -156,7 +159,7 @@
 		
 		socket.on('followershow', function (data) {
 			$('#follower').fadeIn();
-			checkFollowers(data.channel, false, data.interval);
+			checkFollowers(data.channel, data.interval);
 		});
 
 		
@@ -167,9 +170,9 @@
 		
 		socket.on('news', function (data) {
 			if(data.time == '0') {
-				$('#panel').fadeIn();
+				$('#panel').slideDown();
 			} else {
-				$('#panel').fadeIn().delay(data.time).fadeOut();
+				$('#panel').slideDown().delay(data.time).slideUp();
 			}
 			$('#title').text(data.title);
 			$('#text').text(data.text);
@@ -177,16 +180,18 @@
 		
 		socket.on('hide', function (data) {
 			$('#panel').clearQueue();
-			$('#panel').fadeOut();
+			$('#panel').slideUp();
 		});
 		
 		socket.on('showimg', function (data) {
+			$('#image').attr("src", data.url);
 			if(data.time == '0') {
 				$('#image').fadeIn();
 			} else {
 				$('#image').fadeIn().delay(data.time).fadeOut();
 			}
 			$('#image').attr("src", data.url);
+			$('#image').css("display", "inline-block");
 		});
 		
 		socket.on('hideimg', function (data) {
