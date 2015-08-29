@@ -151,6 +151,34 @@
 			<div class="button" id="headerhide">Hide</div>
 		</div>
 		
+		<div class="box">
+			<div class="title">Debating Bracket Table</div>
+			<table>
+				<tr>
+					<td>Team 1</td>
+					<td>Team 2</td>
+				</tr>
+				<tr>
+					<td>1. <input type="text" size="20px" id="t1p1"></td>
+					<td><input type="text" size="20px" id="t2p1"></td>
+				</tr>
+				<tr>
+					<td>2. <input type="text" size="20px" id="t1p2"></td>
+					<td><input type="text" size="20px" id="t2p2"></td>
+				</tr>
+				<tr>
+					<td>3. <input type="text" size="20px" id="t1p3"></td>
+					<td><input type="text" size="20px" id="t2p3"></td>
+				</tr>
+				<tr>
+					<td>4. <input type="text" size="20px" id="t1p4"></td>
+					<td><input type="text" size="20px" id="t2p4"></td>
+				</tr>
+			</table>
+			<div class="button" id="debatingtableshow">Show</div>
+			<div class="button" id="debatingtablehide">Hide</div>
+		</div>
+		
 	</div>
 	
 	<script>
@@ -236,6 +264,31 @@
 		
 		$('#hidemembers').click(function() {
 			socket.emit('hidemembers', '');
+		});
+		
+		$('#debatingtableshow').click(function() {
+			var t1p1 = $('#t1p1').val();
+			var t2p1 = $('#t2p1').val();
+			var t1p2 = $('#t1p2').val();
+			var t2p2 = $('#t2p2').val();
+			var t1p3 = $('#t1p3').val();
+			var t2p3 = $('#t2p3').val();
+			var t1p4 = $('#t1p4').val();
+			var t2p4 = $('#t2p4').val();
+			socket.emit('debatingtableshow', {
+			t1p1 : t1p1,
+			t2p1 : t2p1,
+			t1p2 : t1p2,
+			t2p2 : t2p2,
+			t1p3 : t1p3,
+			t2p3 : t2p3,
+			t1p4 : t1p4,
+			t2p4 : t2p4
+			});
+		});
+		
+		$('#debatingtablehide').click(function() {
+			socket.emit('debatingtablehide', '');
 		});
 	</script>
 </body>

@@ -82,4 +82,12 @@ io.sockets.on('connection', function(socket) {
 	socket.on('followerhide', function(data) {
 		io.emit('followerhide', data);
 	});
+	
+	socket.on('debatingtableshow', function(data) {
+		io.emit('debatingtableshow', data);
+	});
+	
+	socket.on('debatingtablehide', function(data) {
+		io.emit('debatingtablehide', data);
+	});
 });
