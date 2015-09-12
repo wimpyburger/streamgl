@@ -1,0 +1,25 @@
+<div class="box">
+	<div class="title">Members</div>
+	1: <input type="text" id="member1url" size="5px">
+	2: <input type="text" id="member2url" size="5px">
+	3: <input type="text" id="member3url" size="5px"><br>
+	4: <input type="text" id="member4url" size="5px">
+	5: <input type="text" id="member5url" size="5px"><br>
+	<div class="button" id="showmembers">Show</div>
+	<div class="button" id="hidemembers">Hide</div>
+</div>
+
+<script>
+$('#showmembers').click(function() {
+		var url1 = $('#member1url').val();
+		var url2 = $('#member2url').val();
+		var url3 = $('#member3url').val();
+		var url4 = $('#member4url').val();
+		var url5 = $('#member5url').val();
+		socket.emit('showmembers', {url1 : url1, url2 : url2, url3 : url3, url4 : url4, url5 : url5});
+	});
+	
+	$('#hidemembers').click(function() {
+		socket.emit('hidemembers', '');
+	});
+</script>

@@ -1,0 +1,41 @@
+<style>
+	#background {
+		position:absolute;
+		width:100%;
+		height:100%;
+		top:0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index:-2;
+	}
+</style>
+
+<div class="background" id="background"></div>
+
+<script>
+	$('#background').hide();
+	
+	socket.on('backgroundshow', function (data) {
+		$('#background').css('background',data.colour);
+		$('#background').css('background-image','url('+ data.url +')');
+		
+		if(data.tile) {
+			$('#background').css('background-repeat', 'repeat');
+		} else {
+			$('#background').css('background-repeat', 'no-repeat');
+		}
+		
+		if(data.centre) {
+			$('#background').css('background-position', 'center');
+		} else {
+			$('#background').css('background-position', '0% 0%');
+		}
+		
+		$('#background').fadeIn();
+	});
+	
+	socket.on('backgroundhide', function (data) {
+		$('#background').fadeOut();
+	});
+</script>

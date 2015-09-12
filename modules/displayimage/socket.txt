@@ -1,0 +1,2 @@
+showimg
+hideimg

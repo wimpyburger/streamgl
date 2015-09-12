@@ -1,0 +1,56 @@
+<style>
+	.members {
+		padding:4px;
+		background:#EEE;
+		border:1px solid #CCC;
+		margin:2px;
+		float:right;
+	}
+</style>
+
+<div class="members" id="members">
+	<img class="member" id="img1" width="100px">
+	<img class="member" id="img2" width="100px">
+	<img class="member" id="img3" width="100px">
+	<img class="member" id="img4" width="100px">
+	<img class="member" id="img5" width="100px">
+</div>
+
+<script>
+	$('#members').hide();
+	$('.member').hide();
+	
+	socket.on('showmembers', function (data) {
+		if(data.url1) {
+			$('#img1').show();
+			$('#img1').attr("src", data.url1);
+		}
+		
+		if(data.url2) {
+			$('#img2').show();
+			$('#img2').attr("src", data.url2);
+		}
+		
+		if(data.url3) {
+			$('#img3').show();
+			$('#img3').attr("src", data.url3);
+		}
+		
+		if(data.url4) {
+			$('#img4').show();
+			$('#img4').attr("src", data.url4);
+		}
+		
+		if(data.url5) {
+			$('#img5').show();
+			$('#img5').attr("src", data.url5);
+		}
+
+		$('#members').fadeIn();
+	});
+
+	socket.on('hidemembers', function (data) {
+		$('#members').fadeOut();
+		$('.member').fadeOut();
+	});
+</script>

@@ -1,0 +1,43 @@
+<style>
+	.panel {
+		position:absolute;
+		padding:1px;
+		background:#f5f5f5;
+		border:1px solid #CCC;
+		margin:2px;
+		width:500px;
+		top:40px;
+	}
+	#msgtitle {
+		padding:3px;
+		font-weight:bold;
+		background:#e6e6e6;
+	}
+	#msgtext {
+		padding:3px;
+	}
+</style>
+
+<div class="panel" id="panel">
+	<div id="msgtitle"></div>
+	<div id="msgtext"></div>
+</div>
+
+<script>
+	$('#panel').hide();
+	
+	socket.on('showmsg', function (data) {
+		if(data.time == '0') {
+			$('#panel').slideDown();
+		} else {
+			$('#panel').slideDown().delay(data.time).slideUp();
+		}
+		$('#msgtitle').text(data.title);
+		$('#msgtext').text(data.text);
+	});
+	
+	socket.on('hidemsg', function (data) {
+		$('#panel').clearQueue();
+		$('#panel').slideUp();
+	});
+</script>

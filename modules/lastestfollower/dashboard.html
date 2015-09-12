@@ -1,0 +1,19 @@
+<div class="box">
+	<div class="title">Latest Follower</div>
+	Interval: <input type="text" id="followerinterval" size="30px" value="2000"><br>
+	Channel: <input type="text" id="followerchannel" size="30px"><br>
+	<div class="button" id="followershow">Show</div>
+	<div class="button" id="followerhide">Hide</div>
+</div>
+
+<script>
+	$('#followershow').click(function() {
+		var followerinterval = $('#followerinterval').val();
+		var followerchannel = $('#followerchannel').val();
+		socket.emit('followershow', {interval : followerinterval, channel : followerchannel});
+	});
+
+	$('#followerhide').click(function() {
+		socket.emit('followerhide', '');
+	});
+</script>

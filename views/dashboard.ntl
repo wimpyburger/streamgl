@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="css/dashboard.css">
+	<script src="js/dashboard.js"></script>
+</head>
+<body>
+	<h1>Dashboard</h1>
+	<div class="leftside">
+		#LEFT_SIDE#
+	</div>
+		
+	<div class="rightside">
+		#RIGHT_SIDE#
+	</div>
+</body>
+</html>

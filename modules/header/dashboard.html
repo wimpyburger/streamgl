@@ -1,0 +1,23 @@
+<div class="box">
+	<div class="title">Header</div>
+	BGColour: <input type="text" id="headerbg" size="30px" value="#000"><br>
+	Opacity: <input type="text" id="headeropacity" size="30px" value="1"><br>
+	txtColour: <input type="text" id="headercolour" size="30px" value="#FFF"><br>
+	Text: <input type="text" id="headertext" size="30px"><br>
+	<div class="button" id="headershow">Show</div>
+	<div class="button" id="headerhide">Hide</div>
+</div>
+
+<script>
+	$('#headershow').click(function() {
+		var headerbg = $('#headerbg').val();
+		var headeropacity = $('#headeropacity').val();
+		var headercolour = $('#headercolour').val();
+		var headertext = $('#headertext').val();
+		socket.emit('headershow', {bg : headerbg, opacity : headeropacity, bgcolour : headercolour, text : headertext});
+	});
+
+	$('#headerhide').click(function() {
+		socket.emit('headerhide', 0);
+	});
+</script>

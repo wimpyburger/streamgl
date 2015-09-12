@@ -1,0 +1,59 @@
+<style>
+	.debatingtable td {
+		border:1px solid;
+		empty-cells: hide;
+		border:1px solid #FFF;
+		background:#EEE;
+	}
+	.debatingtable {
+		border-radius:3px;
+		border:1px solid #AAA;
+		position:absolute;
+		left:100px;
+		top:200px;
+		background:#AAA;
+	}
+</style>
+
+<table class="debatingtable" id="debatingtable">
+	<tr>
+		<td>Team 1</td>
+		<td>Team 2</td>
+	</tr>
+	<tr>
+		<td id="t1p1"></td>
+		<td id="t2p1"></td>
+	</tr>
+	<tr>
+		<td id="t1p2"></td>
+		<td id="t2p2"></td>
+	</tr>
+	<tr>
+		<td id="t1p3"></td>
+		<td id="t2p3"></td>
+	</tr>
+	<tr>
+		<td id="t1p4"></td>
+		<td id="t2p4"></td>
+	</tr>
+</table>
+
+<script>
+	$('#debatingtable').hide();
+
+	socket.on('debatingtableshow', function (data) {
+		$('#t1p1').html(data.t1p1);
+		$('#t2p1').html(data.t2p1);
+		$('#t1p2').html(data.t1p2);
+		$('#t2p2').html(data.t2p2);
+		$('#t1p3').html(data.t1p3);
+		$('#t2p3').html(data.t2p3);
+		$('#t1p4').html(data.t1p4);
+		$('#t2p4').html(data.t2p4);
+		$('#debatingtable').fadeIn();
+	});
+	
+	socket.on('debatingtablehide', function (data) {
+		$('#debatingtable').fadeOut();
+	});
+</script>

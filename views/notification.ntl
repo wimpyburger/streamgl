@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="css/notification.css">
+	<script src="js/notification.js"></script>
+</head>
+<body>
+	#NOTIFICATION#
+</body>
+</html>

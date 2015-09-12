@@ -1,0 +1,31 @@
+<div class="box">
+	<div class="title">Background Image</div>
+	URL: <input type="text" id="backgroundurl" size="30px"><br>
+	BG: <input type="text" id="backgroundcolour" size="10px" value="#000000">
+	Tile: <input type="checkbox" id="backgroundtile">
+	Centre: <input type="checkbox" id="backgroundcentre"><br />
+	<div class="button" id="backgroundshow">Show</div>
+	<div class="button" id="backgroundhide">Hide</div>
+</div>
+
+<script>
+$('#backgroundshow').click(function() {
+	var backgroundurl = $('#backgroundurl').val();
+	var backgroundcolour = $('#backgroundcolour').val();
+	if($('#backgroundtile').is(':checked')) {
+		var backgroundtile = true;
+	} else {
+		var backgroundtile = false;
+	}
+	if($('#backgroundcentre').is(':checked')) {
+		var backgroundcentre = true;
+	} else {
+		var backgroundcentre = false;
+	}
+	socket.emit('backgroundshow', {url : backgroundurl, colour : backgroundcolour, tile : backgroundtile, centre : backgroundcentre});
+});
+
+$('#backgroundhide').click(function() {
+	socket.emit('backgroundhide', '');
+});
+</script>

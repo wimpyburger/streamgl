@@ -1,0 +1,12 @@
+<div class="box">
+	<div class="title">Transition</div>
+	Time: <input type="text" id="transitiontime" size="30px" value="2000"><br>
+	<div class="button" id="transition">Show</div>
+</div>
+
+<script>
+	$('#transition').click(function() {
+		var transitiontime = $('#transitiontime').val();
+		socket.emit('transition', transitiontime);
+	});
+</script>

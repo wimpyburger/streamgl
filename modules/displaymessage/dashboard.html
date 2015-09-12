@@ -1,0 +1,21 @@
+<div class="box">
+	<div class="title">Display Message</div>
+	Title: <input type="text" id="msgtitle" size="30px"><br>
+	Text: <input type="text" id="msgtext" size="30px"><br>
+	Time: <input type="text" id="msgtime" size="30px" value="5000"><br>
+	<div class="button" id="showmsg">Display</div>
+	<div class="button" id="hidemsg">Hide</div>
+</div>
+
+<script>
+	$('#showmsg').click(function() {
+		var msgtitle = $('#msgtitle').val();
+		var msgtext = $('#msgtext').val();
+		var msgtime = $('#msgtime').val();
+		socket.emit('showmsg', {title : msgtitle, text : msgtext, time : msgtime});
+	});
+	
+	$('#hidemsg').click(function() {
+		socket.emit('hidemsg', '');
+	});
+</script>

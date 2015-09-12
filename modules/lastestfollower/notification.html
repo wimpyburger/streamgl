@@ -1,0 +1,45 @@
+<style>
+	.follower {
+		border:1px solid #000;
+		background:#555;
+		color:#FFF;
+		opacity: 0.8;
+		margin:0 auto;
+		padding:4px;
+		width:350px;
+		text-align:center;
+	}
+</style>
+
+<div class="follower" id="follower"></div>
+
+<script>
+	$('#follower').hide();
+	
+	var intervalfollowers;
+	var socket = io.connect('http://localhost:3000');
+	
+	function checkFollowers(channel, interval) {
+		clearInterval(intervalfollowers);
+		intervalfollowers = setInterval(function() {
+			intervalfollower = true;
+			$.getJSON('https://api.twitch.tv/kraken/channels/' + channel + '/follows?direction=desc&limit=1&callback=?', function(result){
+				if(result.follows) {
+					result.follows.forEach(function(follower) {
+						$('#follower').text("Last follower: " + follower.user.name);
+					});
+				}
+			});
+		}, interval);
+	}
+	
+	socket.on('followershow', function (data) {
+		$('#follower').fadeIn();
+		checkFollowers(data.channel, data.interval);
+	});
+
+	
+	socket.on('followerhide', function (data) {
+		$('#follower').fadeOut();
+	});
+</script>

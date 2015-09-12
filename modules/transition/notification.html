@@ -1,0 +1,35 @@
+<style>
+	#transition {
+		background:#AAA;
+		position:absolute;
+		width:0%;
+		height:0%;
+		z-index:10001;
+	}
+	#transitionimg {
+		position:absolute;
+		top:0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		opacity:0;
+		margin: auto;
+	}
+</style>
+
+<div class="transition" id="transition"><img id="transitionimg" src="img/logo.png"></div>
+
+<script>
+	$('#transition').hide();
+	
+	socket.on('transition', function (data) {
+		$('#transition').show();
+		$('#transitionimg').animate({opacity:1});
+		$('#transition').animate({width:'100%', height:'100%'});
+		$("#transition").delay(data).show(0);
+		$('#transition').animate({width:'0%', height:'0%'});
+		$('#transitionimg').delay(data).animate({opacity:0});
+		
+		//$('#transition').fadeIn().delay(data).fadeOut();
+	});
+</script>
