@@ -1,0 +1,42 @@
+<div class="box">
+	<div class="title">OBS Remote</div>
+	<b>Scene List:</b>
+	<div class="scenes">Not updated</div>
+	<div class="button" id="obsupdate">Update List</div><br>
+	<b>Transition Time:</b><br>
+	<input type="text" value="2000" id="obstransitiontime">
+</div>
+
+<script>
+	function updatelist() {
+		var scenes = obs.getSceneList(function(currentScene, scenes) {
+			$('.scenes').empty();
+			scenes.forEach(function(scene) {
+				if(currentScene == scene.name) {
+					var scenehtml = $("<div class='button' id='scene' onclick='switchScene(this.innerHTML)'>" + scene.name + "</div><br>");
+				} else {
+					var scenehtml = $("<div style='background:#EEE;border:1px solid #AAA;color:#000;' class='button' id='scene' onclick='switchScene(this.innerHTML)'>" + scene.name + "</div><br>");
+				}
+				$('.scenes').append(scenehtml);
+			});
+			$('.scenes').append("<br>");
+		});
+	}
+
+	function switchScene(scene) {
+		var transitiontime = $('#obstransitiontime').val();
+		socket.emit('transition', transitiontime);
+		
+		setTimeout(function(){
+			obs.setCurrentScene(scene);
+			obs.onSceneSwitched = function(sceneName) {
+				updatelist();
+			};
+		}, transitiontime / 2);
+	}
+	
+	// populate scene list
+	$('#obsupdate').click(function() {
+		updatelist();
+	});
+</script>

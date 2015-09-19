@@ -1,7 +1,6 @@
 var updated = false;
 
 function resize() {
-	console.log($('.rightside').css("float"));
 	if($('.leftside').width() < 300) {
 		updated = true;
 		$('.leftside').css("display", "block");
@@ -24,3 +23,11 @@ window.onresize = function(event) {
 setInterval(function(){resize();},500);
 
 var socket = io.connect('http://localhost:3000');
+var obs = new OBSRemote();
+
+// get settings
+socket.emit('getsettings', '');
+
+socket.on('getsettings', function(data) {
+	obs.connect(data.obs_url, data.obs_password);
+});

@@ -7,6 +7,6 @@
 	<script src="/js/notification.js"></script>
 </head>
 <body>
-	#NOTIFICATION#
+	#MODULE#
 </body>
 </html>

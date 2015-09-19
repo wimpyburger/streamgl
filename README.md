@@ -1,9 +1,13 @@
 streamgl
 ========
 
-Graphics system for OBS streams using NodeJS, Express and Socket.IO
+Graphics system for OBS streams using NodeJS, Express, Socket.IO
 
-modules:
+The global view is found at http://localhost:3000/notification
+
+To view an individual module, go to http://localhost:3000/moduleview/[ModuleName]
+
+module files:
 	dashboard.html		-	Will be added to the controlling dashboard
 	notification.html	-	Will be added to the "notification" panel, shown on the stream
 	socket.txt			-	Line separated list of socketIO outputs used by the module

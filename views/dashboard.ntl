@@ -2,9 +2,10 @@
 <html>
 <head>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/js/obs-remote.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
-	<link rel="stylesheet" href="css/dashboard.css">
-	<script src="js/dashboard.js"></script>
+	<link rel="stylesheet" href="/css/dashboard.css">
+	<script src="/js/dashboard.js"></script>
 </head>
 <body>
 	<h1>Dashboard</h1>
